@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <!--EasyUI-->
+        <link rel="stylesheet" type="text/css" href="Build/easyui/themes/metro/easyui.css">
+        <link rel="stylesheet" type="text/css" href="Build/easyui/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="Build/easyui/demo.css">
+        <script type="text/javascript" src="Build/easyui/jquery.min.js"></script>
+        <script type="text/javascript" src="Build/easyui/jquery.easyui.min.js"></script>
+	</head>
+
+	<body>
+        <!--EasyUI Panel-->
+        <div class="easyui-panel" title="工程设置" style="height: 520px; width: 350px;">
+            <div class="easyui-tabs" style="background-color: rgb(255,255,255);">
+                <div id="envSetting" title="环境设置" style="height: 800px; width: 300px;">
+                    <br />
+                    <div>雾气特征</div>
+                    <div class="datagrid-toolbar"></div>
+                    <br />
+                    <div>
+                         <input id="fogVisible" type="checkbox" name="fogVisible" value="开启雾效" onchange="fogOnChange(this)" />&nbsp; &nbsp;开启雾效
+                    </div>
+                    <br />
+                    <div>
+                        &nbsp;&nbsp;雾气颜色：<input id="color" class="color" value="#FFFFFF" /><br /><br />
+                        &nbsp;&nbsp;初始距离：<input id="txtcsjl" class="easyui-textbox" value="0" disabled=""  /><br /><br />
+                        &nbsp;&nbsp;最浓距离：<input id="txtznjl" class="easyui-textbox" value="最浓距离大于初始距离" disabled=""  /><br /><br />
+                    </div>
+                    <br />
+                    <div>环境光</div>
+                    <div class="datagrid-toolbar"></div>
+                    <div style="display: inline-flex; width: 100%;"></div>
+                    <br /> 
+                    <div style="display: inline-flex; width: 100%">
+                        &nbsp;&nbsp;全局环境光：&nbsp; &nbsp;&nbsp;<input id="qjgztxt"  value="30" class="easyui-textbox" style="width:40px;height:20px" >
+                        &nbsp;&nbsp;&nbsp;
+                        <input id="sliderlight" class="easyui-slider" style="width: 180px;height: 20px;" value="30" data-options="showTip:true, max:100, min:0, onChange:valueOnChangeEnv" />
+                    </div>
+                    <br />
+                    <br />
+                    <div>剖切面设置</div>
+                    <div class="datagrid-toolbar"></div>
+                    <br> 
+                    <div>
+                        &nbsp; &nbsp;交线颜色：
+                        <input class="color" id="colorjx" value="#FFFFFF" />
+                    </div>
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+		<script src="js/mui.js"></script>
+		<script type="text/javascript">
+            
+            
+            
+            function fogOnChange(obj) {
+                if(obj.checked) {
+                    $('#txtcsjl').textbox('enable', true);
+                    $('#txtznjl').textbox('enable', true);
+                } else {
+                    $('#txtcsjl').textbox('disable', true);
+                    $('#txtznjl').textbox('disable', true);
+                }
+            }
+            
+			function valueOnChangeEnv(value) {
+                $('#qjgztxt').textbox('setValue', value);
+            }
+            
+            
+            
+		</script>
+	</body>
+
+</html>
