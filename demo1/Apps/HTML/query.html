@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>city</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="../../Build/cm7.js"></script>
+		
+		<!-- EasyUI + Jquery -->
+		<link rel="stylesheet" type="text/css" href="../../Build/EasyUI/themes/default/easyui.css">
+		<link rel="stylesheet" type="text/css" href="../../Build/EasyUI/themes/icon.css">
+		<script type="text/javascript" src="../../Build/EasyUI/jquery.min.js"></script>
+		<script type="text/javascript" src="../../Build/EasyUI/jquery.easyui.min.js"></script>
+
+	</head>
+
+	<body style="margin:0px;padding:0px;">
+		<div id="ym" style="height: 100%; width: 400px ">
+			<img id="ymimg" src="../../Data/img/html/htmlBack.png" style="position:absolute;left:0;top:0;width:400px;height:100%">
+			<label id="ControlTitlebar" style="position:absolute;left:20px;top:15px;color: whitesmoke;font-size: 1.2em;">属性展示</label>
+			<button onclick="closeUn()" id="ButtonClose" style="position:absolute;right:10px;top:10px;color:whitesmoke;background:transparent;border:none;font-size:1.2em">×</button>
+			
+			<div style="position:absolute;top:50px;left:20px;">
+				<table id="dg" class="easyui-datagrid" title="基本属性" style="width:360px;height:180px" data-options="">
+					<thead>
+						<tr>
+							<th data-options="field:'name',width:170">属性名称</th>
+							<th data-options="field:'value',width:170">值</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			
+			<label id="ControlTitlebar" style="position:absolute;left:20px;top:240px;color:whitesmoke;font-size:1em;">详细属性</label>
+			<!-- 详细属性值 -->
+			<div style="position:absolute;top:270px;left:20px;">
+				<table id="edit" class="easyui-propertygrid" title="BIM" style="width:360px" data-options="showGroup:true"></table>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//页面关闭
+			window.onunload = function() {
+				if(external.parentWindow.__g != undefined) {
+					if(external.parentWindow.__g.featureManager != undefined) {
+					}
+					external.parentWindow.__g.interactMode = gviInteractMode.gviInteractNormal;
+					external.parentWindow.wpBim = ""; //parentWindow值main.html
+				}
+			}
+			
+			function closeUn() {
+
+				external.parentWindow.__g.featureManager.unhighlightAll();
+			}
+			
+			//页面加载
+			window.onload = function() {
+
+				loadDada();
+			}
+			//关闭按钮hover事件
+			var bg;
+			$("#ButtonClose").hover(function() {
+				bg = $(this).css("background-color");
+				$(this).css("background-color", "red");
+			}, function() {
+				$(this).css("background-color", bg);
+			});
+
+			function loadDada() {
+				var infoData = external.parentWindow.infoData;
+				// alert(infoData[0]["value"]);
+				
+				$('#dg').datagrid('loadData', infoData);//loadData 加载本地数据，easyui中datagrid的方法
+
+				var propertyData = external.parentWindow.propertyData;
+				if(propertyData == undefined) return;
+
+				$('#edit').propertygrid({
+					width: 360,
+					height: 310,
+					showGroup: true,
+					columns: [
+						[{
+								field: 'name',
+								title: '属性名称',
+								width: 100,
+								resizable: true
+							},
+							{
+								field: 'value',
+								title: '属性值',
+								width: 100,
+								resizable: false
+							}
+						]
+					]
+				});
+				$('#edit').propertygrid('loadData', propertyData);
+
+			}
+		</script>
+	</body>
+
+</html>

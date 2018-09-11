@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- zTree -->
+		<link href="../../Build/zTree/css/metroStyle/metroStyle.css" rel="stylesheet" type="text/css" />
+		<script src="../../Build/zTree/js/jquery-1.4.4.min.js"></script>
+		<script src="../../Build/zTree/js/jquery.ztree.core-3.5.js"></script>
+		<script src="../../Build/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+
+		<script src="../JS/private/jg.js"></script>
+		<script src="../../Build/cm7.js"></script>
+		<!--<script src="../JS/private/cm7_sample_util.js"></script>-->
+		<script src="../JS/public/globeVar.js"></script>
+		<script src="../JS/private/tdbxquery.js"></script>
+
+		<style>
+			* {
+				padding: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="../../Data/img/html/background.png" style="position:absolute;left:0;top:0;width:400px;height:600px;border:0;" usemap="#treemap" hidefocus="true">
+		<map name="treemap">
+			<area id = "ControlTitlebar" shape="rect" coords="0,0,400,600" alt="结构树" href="#" onfocus="blur(this);" />
+		</map>
+		<label style="position:absolute;left:30px;top:22px;color: whitesmoke;font-size: 1.2em;">结构树信息</label>
+		<button id="ButtonClose" style="position:absolute;right:10px;top:10px;color:whitesmoke;background:transparent;border:none;font-size:1.2em">×</button>
+
+		<div style="position:absolute;left:30px;top:60px;width:360px;height:500px;overflow-y:hidden;">
+			<div style="top:150px; margin-left:0;">
+				<ul id="jgTree" class="ztree" style="height:80%; width:100%;"></ul>
+			</div>
+		</div>
+	</body>
+	<script>
+		window.onload = function() {
+
+			jgTreeFrame();
+			
+		};
+		
+		var inforData = external.parentWindow.inforData;
+		
+		var propertyData = external.parentWindow.propertyData;
+
+		//关闭按钮hover事件
+		var bg;
+		$("#ButtonClose").hover(function() {
+			bg = $(this).css("background-color");
+			$(this).css("background-color", "red");
+		}, function() {
+			$(this).css("background-color", bg);
+		});
+	</script>
+
+</html>
