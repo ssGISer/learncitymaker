@@ -1,0 +1,12 @@
+#north{
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#323f76), to(#1c7cd2));
+    background:linear-gradient(to top,#323f76,#1c7cd2);
+    background: -moz-linear-gradient(top, #323f76, #1c7cd2);
+    background: -o-linear-gradient(top,#323f76, #1c7cd2);
+}
+#south{
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#3c5a6e), to(#282864));
+    background:linear-gradient(to top,#3c5a6e,#282864);
+    background: -moz-linear-gradient(top, #3c5a6e, #282864);
+    background: -o-linear-gradient(top,#3c5a6e, #282864);
+}

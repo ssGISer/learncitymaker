@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- zTree -->
+		<link href="../../Build/fontawesome.css" rel="stylesheet" type="text/css" />
+		<link href="../../Build/zTree/css/metroStyle/metroStyle.css" rel="stylesheet" type="text/css" />
+		<script src="../../Build/zTree/js/jquery-1.4.4.min.js"></script>
+		<script src="../../Build/zTree/js/jquery.ztree.core-3.5.js"></script>
+		<script src="../../Build/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+		<script src="../JS/private/layer.js"></script>
+		<script src="../JS/public/globeVar.js"></script>
+		<script src="../JS/private/tdbxquery.js"></script>
+		<style>
+			* {
+				padding: 0;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="../../Data/img/html/background.png" style="position:absolute;left:0;top:0;width:400px;height:600px;border:0" usemap="#treemap" hidefocus="true">
+		<map name="treemap">
+			<area id = "ControlTitlebar" shape="rect" coords="0,0,400,600" alt="工程树" href="#" onfocus="blur(this);" />
+		</map>
+		<label style="position:absolute;left:20px;top:22px;color: whitesmoke;font-size: 1.2em">工程树信息</label>
+		<button id="ButtonClose" style="position:absolute;right:10px;top:10px;color:whitesmoke;background:transparent;border:none;font-size:1.2em">×</button>
+
+		<div style="position:absolute;left:20px;top:55px;width:360px;height:500px;overflow: auto;">
+			<div style="top:150px; margin-left:0;">
+				<ul id="treeDemoTemp" class="ztree" style="height:80%; width:100%">
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script>
+
+		window.onload = function() {
+			leftFrameList();
+		};
+		
+		//关闭按钮hover事件
+		var bg;
+		$("#ButtonClose").hover(function() {
+			bg = $(this).css("background-color");
+			$(this).css("background-color", "red");
+		}, function() {
+			$(this).css("background-color", bg);
+		});
+
+	</script>
+
+</html>

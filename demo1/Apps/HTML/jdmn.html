@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>ComparedRenderRule</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!-- JqueryUI -->
+		<link rel="stylesheet" href="../../Build/JqueryUI/jquery-ui-themes-1.12.1/themes/base/jquery-ui.min.css">
+		<script src="../../Build/JqueryUI/jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+		<script src="../../Build/JqueryUI/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+		<!-- CM7     -->
+		<script type="text/javascript" src="../../Build/cm7.js"></script>
+		<!--<script type="text/javascript" src="cm7_sample_util.js"></script>-->
+
+		<script type="text/javascript" src="../JS/public/globeVar.js"></script>
+		<script type="text/javascript" src="../JS/init.js"></script>
+	</head>
+
+	<body style="margin:0px;scroll:no">
+		<div>
+			<button class="ui-button ui-widget ui-corner-all" onclick="play()">播放</button>
+			<button class="ui-button ui-widget ui-corner-all" onclick="pause()">暂停</button>
+			<strong id="sDate"></strong>
+			<p></p>
+			<div>
+				<div style="width:99%; float:left;">
+					<div id="d_time" style="width:100%;"></div>
+				</div>
+				<div style="float:left;">
+					<strong id="d_start"></strong>
+				</div>
+				<div style="float:right;">
+					<strong id="d_end"></strong>
+				</div>
+			</div>
+
+		</div>
+		<div>
+			<object id="renderControl" type="application/x-cm-3d8" style="height: 600px; width: 800px "></object>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		window.onload = function() {
+			initialize();
+		}
+		//===================================全部变量====================================//
+		var pw = external.parentWindow;
+		var g = pw.g;
+		var _startTime; //开始时间
+		var _endTime; //结束时间
+		var _playTime = 1000; //播放时间隔时间，毫秒
+		var _slider;
+		var _fl;
+		var _step = 1;
+		var _timerObj;
+		var _ps;
+		//==============================================================================//
+		function initialize() {
+			// 打开对应的工点
+			//			var chliditemId = g.projectTree.findItem("建筑结构\\建筑结构_已分离\\楼板"); //获取图层
+			var fcguid = pw._guid;
+
+			_startTime = new Date("2017-01-01");
+			_endTime = new Date("2017-03-01");
+
+			//显示时间
+			$("#d_start").text(_startTime.getFullYear() + "-" + (_startTime.getMonth() + 1) + "-" + _startTime.getDate());
+			$("#d_end").text(_endTime.getFullYear() + "-" + (_endTime.getMonth() + 1) + "-" + _endTime.getDate());
+			
+			set_slider(_startTime, _endTime);
+
+			// 选择关联的fdb
+			var gdName = pw._tl_name + ".FDB";
+			var ci = g.new_ConnectionInfo;
+			ci.connectionType = 101;
+			ci.server = "127.0.0.1";
+			ci.port = 8040;
+			ci.database = gdName;
+			ci.userName = "";
+			ci.password = "";
+			var ds = g.dataSourceFactory.openDataSource(ci);
+			var fdsNames = ds.getFeatureDatasetNames();
+			if(fdsNames.length == 0)
+				return;
+			var fds = ds.openFeatureDataset(fdsNames[0]);
+			var fcNames = fds.getNamesByType(gviDataSetType.gviDataSetFeatureClassTable);
+			for(var i = 0; i < fcNames.length; i++) {
+				var fc = fds.openFeatureClass(fcNames[i]);
+				var fcGuid = fc.guid;
+				var fl = g.objectManager.getObjectById(fcGuid);
+			}
+
+			//			var fc = fds.openFeatureClass(fcName);
+			var fl = g.objectManager.getObjectById(fcguid);
+
+			_ps = g.new_PropertySet;
+			_ps.setProperty("num", _startTime);
+
+			fl.compareRenderRuleVariants = _ps;
+
+			var render = g.new_ValueMapGeometryRender; //创建多专题的几何渲染器
+			
+			{ //方案
+				var scheme = g.new_GeometryRenderScheme;
+				
+				var rule = g.new_ComparedRenderRule;
+				rule.lookUpField = "start"; 
+				rule.compareVariant = "num"; //右操作数
+				rule.compareOperator = 2; //gviCompareType
+				
+				scheme.addRule(rule);
+				
+				var mps = g.new_ModelPointSymbol;//创建渲染
+				mps.enableColor = true;
+				mps.color = 0xff00ff00;
+				
+				scheme.mps = mps;
+				render.addScheme(scheme);
+				
+			} {
+				var scheme = g.new_GeometryRenderScheme;
+				var rule = g.new_ComparedRenderRule;
+				rule.lookUpField = "end"; //设置渲染规则针对哪个字段有效（必须是创建RenderIndex渲染索引的字段）
+				rule.compareVariant = "num";
+				rule.compareOperator = 4;
+				scheme.addRule(rule);
+
+				var mps = g.new_ModelPointSymbol;
+				mps.enableColor = true;
+				mps.color = 0xff666666;
+				scheme.mps = mps;
+				render.addScheme(scheme);
+			}
+
+			fl.setGeometryRender(render); //设置几何渲染器，三维窗口会刷新FeatureLayer
+			_fl = fl;
+		}
+
+		//设置滑块
+		function set_slider(start_time, end_time) {
+			var max_num = dateToNumber(_startTime, _endTime);
+			_slider = $("#d_time").slider({
+				min: 0,
+				max: max_num,//天数
+				step: _step,
+				orientation: "horizontal",
+				range: "min",
+				animate: true,
+				slide: function(event, ui) {
+					//改变事件
+					set_time(ui.value); //根据滑块上的值
+				}
+			});
+		}
+
+		//滑块改变事件
+		function set_time(val) {
+			var currentTime = dateAddDay(_startTime, val);
+			var currentDate = currentTime.getFullYear() + "-" + (currentTime.getMonth() + 1) + "-" + currentTime.getDate();
+			$("#sDate").html(currentDate);//显示滚动条当前时间
+
+			_ps.setProperty("num", currentDate);
+			_fl.compareRenderRuleVariants = _ps;
+		}
+		var _now_val;
+
+		//播放事件
+		function play() {
+			var max_num = dateToNumber(_startTime, _endTime);
+			if(_now_val < max_num) {
+				play_node(_now_val, max_num);
+			} else {
+				play_node(0, max_num);
+			}
+		}
+		//自动播放设置节点
+		function play_node(now_num, max_num) {
+			if(now_num <= max_num) {
+				_now_val = now_num;
+				_slider.slider("value", now_num);
+				set_time(now_num);
+				_timerObj = setTimeout(function() {
+					now_num += _step;
+					play_node(now_num, max_num)
+				}, _playTime);//1秒后执行play_node
+			}
+		}
+
+		function pause() {
+			clearTimeout(_timerObj);
+		}
+
+		//将时间间隔转换为天数
+		function dateToNumber(start_time, end_time) {
+			return parseInt(Math.abs(end_time - start_time) / 1000 / 60 / 60 / 24) //把相差的毫秒数转换为天数
+		}
+
+		//时间加n天
+		function dateAddDay(time, n) {
+			var d = new Date(time);
+			d.setDate(d.getDate() + n);
+			return d;
+		}
+	</script>
+
+</html>

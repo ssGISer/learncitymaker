@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Fluid Panel - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../../themes/bootstrap/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../demo.css">
+	<script type="text/javascript" src="../../jquery.min.js"></script>
+	<script type="text/javascript" src="../../jquery.easyui.min.js"></script>
+</head>
+<body>
+	<h2>Fluid Panel</h2>
+	<p>This example shows how to set the width of Panel to a percentage of its parent container.</p>
+    <button value="sss" style="position: relative; right: 10px; ">s</button>
+	<div style="margin:20px 0 10px 0;">
+	</div>
+	<div id="p" class="easyui-panel" title="结构属性信息" style="width:400;height:600px;padding:0px;" 
+    data-options="iconCls:'icon-save',closable:true,tools:'#tt'">
+		<div class="easyui-tabs" data-options="tabWidth:133">
+            <div title="结构树">
+        		<img src="../../Data/img/html/background1.png" style="position: inherit;border:0;" usemap="#treemap" />
+        		<map name="treemap" id="treemap">
+        			<area id="ControlTitlebar" shape="rect" coords="0,0,400,600"/>
+        		</map>
+        	</div>
+        	<div title="属性信息">
+        		<img src="../../Data/img/html/background2.png" style="position: inherit;left:0;top:0;border:0;" usemap="#propertymap" />
+        		<map name="propertymap" id="propertymap">
+        			<area id="ControlTitlebar" shape="rect" coords="0,0,400,600"/>
+        		</map>
+        	</div>
+        	<div title="相关文件">
+        		<img src="../../Data/img/html/background3.png" style="position: inherit;left:0;top:0;border:0;" usemap="filemap" />
+        		<map name="filemap" id="filemap">
+        			<area id="ControlTitlebar" shape="rect" coords="0,0,400,600" />
+        		</map>
+        	</div>
+        </div>
+	</div>
+</body>
+</html>

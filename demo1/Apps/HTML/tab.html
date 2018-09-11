@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+    <!-- easyui -->
+	<link rel="stylesheet" type="text/css" href="../../Build/easyui-1.6.2/themes/bootstrap/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../../Build/easyui-1.6.2/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="../Build/easyui-1.6.2/demo/demo.css">
+	<script type="text/javascript" src="../../Build/easyui-1.6.2/jquery.min.js"></script>
+	<script type="text/javascript" src="../../Build/easyui-1.6.2/jquery.easyui.min.js"></script>
+    
+    <!-- ztree -->
+    <link rel="stylesheet" type="text/css" href="../../Build/zTree/css/metroStyle/metroStyle.css" />
+    <script src="../../Build/zTree/js/jquery.ztree.core-3.5.js"></script>
+    <script src="../../Build/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+    <script src="../../Build/zTree/js/jquery-1.4.4.min.js"></script>
+    
+    <script src="../JS/private/jg.js"></script>
+	<script src="../../Build/cm7.js"></script>
+	<script src="../JS/public/globeVar.js"></script>
+    <script src="../JS/private/tdbxquery.js"></script>
+</head>
+<body>
+	<div id="ControlTitlebar" class="easyui-panel" title="结构属性信息" style="width:422px;height:724px;padding:0px;margin:0px;" >
+        <div class="easyui-tabs" data-options="tabWidth:132">
+        	<div title="结构树" style="width:418px;height:651px;padding:0px;" />
+                <ul id="jgTree" class="ztree" style="height"></ul>
+            </div>
+            <div title="属性信息">
+               
+            </div>
+            <div title="相关文件">
+                
+            </div>
+        </div>
+	</div>
+</body>
+<script>
+    
+    window.onload = function(){
+        jgTreeFrame();
+    }
+    
+</script>
+</html>
